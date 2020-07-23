@@ -16,31 +16,35 @@ public class ItemGenerator : MonoBehaviour
     private int goalPos = 120;
     //アイテムを出すx方向の範囲
     private float posRange = 3.4f;
-    //アイテム生成時間間隔
-    private float interval;
     //経過時間
     private float time = 0f;
-
+    //Rigidbodyを入れる
+    Rigidbody rigid;
+    //速さを入れる
+    float speed;
 
     // Use this for initialization
     void Start()
     {
         //シーン中のunitychanオブジェクトを取得
         unityChan = GameObject.Find("unitychan");
-        //時間間隔を決定する
-        interval = 0.5f;
+        //unitychanのRigidbodyを取得
+        rigid = GameObject.Find("unitychan").GetComponent<Rigidbody>();
 
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        //速さを取得
+        speed = rigid.velocity.magnitude;
         //時間計測
         time += Time.deltaTime;
+        //距離を算出
+        float distance = speed * time;
 
         //移動距離が20mを超えて、ユニティちゃんがゴール50m前よりも手前にいる場合
-        if (time > interval && unityChan.transform.position.z < goalPos - 50)
+        if (distance > 20 && unityChan.transform.position.z < goalPos - 50)
         {
                 //どのアイテムを出すのかをランダムに設定
                 int num = Random.Range(1, 11);
